@@ -54,7 +54,7 @@ func main() {
 	// Get a datastore instance
 	ds := pg.GetInstance(appConfig.Db)
 
-	apiService := web.NewAPIService(*config.Get().Server, ds)
+	apiService := web.NewAPIService(*appConfig.Server, ds)
 
 	// gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()

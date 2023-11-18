@@ -1348,6 +1348,10 @@ const docTemplate = `{
     "definitions": {
         "dto.Brand": {
             "type": "object",
+            "required": [
+                "name",
+                "status_id"
+            ],
             "properties": {
                 "id": {
                     "type": "integer"

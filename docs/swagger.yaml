@@ -8,6 +8,9 @@ definitions:
         type: string
       status_id:
         type: integer
+    required:
+    - name
+    - status_id
     type: object
   dto.BrandUpdate:
     properties:
