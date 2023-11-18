@@ -4,8 +4,8 @@ import "techno-store/internal/domain/bo"
 
 type Brand struct {
 	ID       int64  `json:"id,omitempty"`
-	Name     string `json:"name"`
-	StatusID int64  `json:"status_id"`
+	Name     string `json:"name" binding:"required"`
+	StatusID int64  `json:"status_id" binding:"required"`
 }
 
 func (b Brand) Model() bo.Brand {

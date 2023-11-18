@@ -43,7 +43,7 @@ func (s *brandStore) GetBrandByID(ctx context.Context, brandID int64) (bo.Brand,
 	dbQuery := fmt.Sprintf("SELECT %s FROM brands WHERE id = $1", strings.Join(brandFields, ","))
 	row := conn.QueryRow(ctx, dbQuery, brandID)
 
-	if err = row.Scan(&id, &name, &name, &statusID, &createdAt); err != nil {
+	if err = row.Scan(&id, &name, &statusID, &createdAt); err != nil {
 		if err == pgx.ErrNoRows {
 			slog.Error("brand id does not exist", slog.Int64("id", brandID))
 			return bo.Brand{}, bo.ErrBrandNotFound
