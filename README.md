@@ -1,11 +1,15 @@
 # technoStore
-### Run Locally
+### Run Product Store Server
 
 ```bash
 make run
 ```
 Visit http://localhost:8080/swagger/index.html#/ for swagger doc of the project
 
+### Run LRU
+```bash
+make lru
+```
 ### Test
 
 ```bash

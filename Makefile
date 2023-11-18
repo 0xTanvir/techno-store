@@ -17,6 +17,9 @@ $(MOCK_BIN):
 run:
 	go run ./cmd/server/main.go
 
+lru:
+	go run ./cmd/problem_solving/main.go
+
 test:
 	go test -v -cover -short ./...
 
@@ -39,4 +42,4 @@ migrate-up: $(MIGRATE_BIN)
 migrate-down: $(MIGRATE_BIN)
 	migrate -source file://db/migrations -database postgresql://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=disable -verbose down
 
-.PHONY: run test swag clean mock migrate-up migrate-down mock-db
+.PHONY: run lru test swag clean mock migrate-up migrate-down mock-db
