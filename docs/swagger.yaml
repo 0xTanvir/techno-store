@@ -1,0 +1,1105 @@
+basePath: ./
+definitions:
+  dto.Brand:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      status_id:
+        type: integer
+    type: object
+  dto.BrandUpdate:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      status_id:
+        type: integer
+    type: object
+  dto.CategoriesTree:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.CategoryTree'
+        type: array
+    type: object
+  dto.Category:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      parent_id:
+        type: integer
+      sequence:
+        type: integer
+      status_id:
+        type: integer
+    type: object
+  dto.CategoryTree:
+    properties:
+      category_name:
+        type: string
+      children:
+        items:
+          $ref: '#/definitions/dto.CategoryTree'
+        type: array
+      id:
+        type: integer
+    type: object
+  dto.CategoryUpdate:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      sequence:
+        type: integer
+      status_id:
+        type: integer
+    type: object
+  dto.Error:
+    properties:
+      message:
+        type: string
+    type: object
+  dto.IDWrapper:
+    properties:
+      id:
+        minimum: 1
+        type: integer
+    required:
+    - id
+    type: object
+  dto.PaginatedBrandCollection:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.Brand'
+        type: array
+      total:
+        description: This will always return the total of all records
+        type: integer
+    type: object
+  dto.PaginatedProduct:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.Product'
+        type: array
+      total:
+        description: This will always return the total of all records
+        type: integer
+    type: object
+  dto.PaginatedProductStockCollection:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.ProductStock'
+        type: array
+      total:
+        description: This will always return the total of all records
+        type: integer
+    type: object
+  dto.PaginatedSupplierCollection:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.Supplier'
+        type: array
+      total:
+        description: This will always return the total of all records
+        type: integer
+    type: object
+  dto.Product:
+    properties:
+      brand_id:
+        type: integer
+      category_id:
+        type: integer
+      description:
+        type: string
+      discount_price:
+        type: number
+      id:
+        type: integer
+      name:
+        type: string
+      specifications:
+        type: string
+      status_id:
+        type: integer
+      supplier_id:
+        type: integer
+      tags:
+        type: string
+      unit_price:
+        type: number
+    type: object
+  dto.ProductStock:
+    properties:
+      id:
+        type: integer
+      product_id:
+        type: integer
+      stock_quantity:
+        type: integer
+    type: object
+  dto.ProductStockUpdate:
+    properties:
+      product_id:
+        type: integer
+      stock_quantity:
+        type: integer
+    type: object
+  dto.ProductUpdate:
+    properties:
+      brand_id:
+        type: integer
+      category_id:
+        type: integer
+      description:
+        type: string
+      discount_price:
+        type: number
+      id:
+        type: integer
+      name:
+        type: string
+      specifications:
+        type: string
+      status_id:
+        type: integer
+      supplier_id:
+        type: integer
+      tags:
+        type: string
+      unit_price:
+        type: number
+    type: object
+  dto.Supplier:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      is_verified_supplier:
+        type: boolean
+      name:
+        type: string
+      phone:
+        type: string
+      status_id:
+        type: integer
+    type: object
+  dto.SupplierUpdate:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      is_verified_supplier:
+        type: boolean
+      name:
+        type: string
+      phone:
+        type: string
+      status_id:
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Describes technoStore REST API
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: technoStore API
+  version: "1.0"
+paths:
+  /v1/brand:
+    post:
+      consumes:
+      - application/json
+      description: Create a new Brand in the system
+      parameters:
+      - description: Brand params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Brand'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.IDWrapper'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Error
+          schema:
+            type: string
+      summary: Add a new Brand
+      tags:
+      - Brand
+  /v1/brand/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a Brand by id
+      parameters:
+      - description: Brand ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Brand delete processed
+          schema:
+            type: string
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "404":
+          description: Brand not found
+          schema:
+            type: string
+        "500":
+          description: Error
+          schema:
+            type: string
+      summary: Delete a Brand by id
+      tags:
+      - Brand
+    get:
+      consumes:
+      - application/json
+      description: Get a Brand by id
+      parameters:
+      - description: Brand ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Brand'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Error
+          schema:
+            type: string
+      summary: Get a Brand by id
+      tags:
+      - Brand
+    patch:
+      consumes:
+      - application/json
+      description: Update a Brand by id
+      parameters:
+      - description: Brand params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.BrandUpdate'
+      - description: Brand ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: BrandDto updated
+          schema:
+            type: string
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Error
+          schema:
+            type: string
+      summary: Update a Brand by id
+      tags:
+      - Brand
+  /v1/brands:
+    get:
+      consumes:
+      - application/json
+      description: Get Brands
+      parameters:
+      - description: limit
+        in: query
+        name: limit
+        type: integer
+      - description: offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.PaginatedBrandCollection'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "500":
+          description: Error
+          schema:
+            type: string
+      summary: Get Brands
+      tags:
+      - Brand
+  /v1/categories:
+    get:
+      consumes:
+      - application/json
+      description: Get categories
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CategoriesTree'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "500":
+          description: Error
+          schema:
+            type: string
+      summary: Get categories
+      tags:
+      - Category
+  /v1/category:
+    post:
+      consumes:
+      - application/json
+      description: Create a new Category in the system
+      parameters:
+      - description: Category params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Category'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.IDWrapper'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Error
+          schema:
+            type: string
+      summary: Add a new Category
+      tags:
+      - Category
+  /v1/category/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a Category by id
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Category delete processed
+          schema:
+            type: string
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "404":
+          description: Category not found
+          schema:
+            type: string
+        "500":
+          description: Error
+          schema:
+            type: string
+      summary: Delete a Category by id
+      tags:
+      - Category
+    get:
+      consumes:
+      - application/json
+      description: Get a Category by id
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Category'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Error
+          schema:
+            type: string
+      summary: Get a Category by id
+      tags:
+      - Category
+    patch:
+      consumes:
+      - application/json
+      description: Update a Category by id
+      parameters:
+      - description: Category params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CategoryUpdate'
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: CategoryDto updated
+          schema:
+            type: string
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Error
+          schema:
+            type: string
+      summary: Update a Category by id
+      tags:
+      - Category
+  /v1/product:
+    post:
+      consumes:
+      - application/json
+      description: Create a new product in the system
+      parameters:
+      - description: Product params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Product'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.IDWrapper'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Error
+          schema:
+            type: string
+      summary: Add a new product
+      tags:
+      - Product
+  /v1/product-stock:
+    post:
+      consumes:
+      - application/json
+      description: Create a new ProductStock in the system
+      parameters:
+      - description: ProductStock params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ProductStock'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.IDWrapper'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Error
+          schema:
+            type: string
+      summary: Add a new ProductStock
+      tags:
+      - ProductStock
+  /v1/product-stock/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a ProductStock by id
+      parameters:
+      - description: ProductStock ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: ProductStock delete processed
+          schema:
+            type: string
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "404":
+          description: ProductStock not found
+          schema:
+            type: string
+        "500":
+          description: Error
+          schema:
+            type: string
+      summary: Delete a ProductStock by id
+      tags:
+      - ProductStock
+    get:
+      consumes:
+      - application/json
+      description: Get a ProductStock by id
+      parameters:
+      - description: ProductStock ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ProductStock'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Error
+          schema:
+            type: string
+      summary: Get a ProductStock by id
+      tags:
+      - ProductStock
+    patch:
+      consumes:
+      - application/json
+      description: Update a ProductStock by id
+      parameters:
+      - description: ProductStock params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ProductStockUpdate'
+      - description: ProductStock ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: ProductStockDto updated
+          schema:
+            type: string
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Error
+          schema:
+            type: string
+      summary: Update a ProductStock by id
+      tags:
+      - ProductStock
+  /v1/product-stocks:
+    get:
+      consumes:
+      - application/json
+      description: Get ProductStocks
+      parameters:
+      - description: limit
+        in: query
+        name: limit
+        type: integer
+      - description: offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.PaginatedProductStockCollection'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "500":
+          description: Error
+          schema:
+            type: string
+      summary: Get ProductStocks
+      tags:
+      - ProductStock
+  /v1/product/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a Product by id
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Product delete processed
+          schema:
+            type: string
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "404":
+          description: Product not found
+          schema:
+            type: string
+        "500":
+          description: Error
+          schema:
+            type: string
+      summary: Delete a Product by id
+      tags:
+      - Product
+    get:
+      consumes:
+      - application/json
+      description: Get a Product by id
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Product'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Error
+          schema:
+            type: string
+      summary: Get a Product by id
+      tags:
+      - Product
+    patch:
+      consumes:
+      - application/json
+      description: Update a product by id
+      parameters:
+      - description: product params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ProductUpdate'
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: productDto updated
+          schema:
+            type: string
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Error
+          schema:
+            type: string
+      summary: Update a product by id
+      tags:
+      - Product
+  /v1/products:
+    get:
+      consumes:
+      - application/json
+      description: Get Products by query
+      parameters:
+      - description: q is query string of product name
+        in: query
+        name: q
+        type: string
+      - collectionFormat: multi
+        description: brand
+        in: query
+        items:
+          type: integer
+        name: brand
+        type: array
+      - description: category
+        in: query
+        name: category
+        type: integer
+      - description: supplier
+        in: query
+        name: supplier
+        type: integer
+      - description: verified_supplier
+        in: query
+        name: verified_supplier
+        type: boolean
+      - description: min_price
+        in: query
+        name: min_price
+        type: number
+      - description: max_price
+        in: query
+        name: max_price
+        type: number
+      - description: sort
+        in: query
+        name: sort
+        type: string
+      - description: order
+        in: query
+        name: order
+        type: string
+      - description: limit
+        in: query
+        name: limit
+        type: integer
+      - description: offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.PaginatedProduct'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "500":
+          description: Error
+          schema:
+            type: string
+      summary: Get Products by query
+      tags:
+      - Product
+  /v1/supplier:
+    post:
+      consumes:
+      - application/json
+      description: Create a new Supplier in the system
+      parameters:
+      - description: Supplier params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Supplier'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.IDWrapper'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Error
+          schema:
+            type: string
+      summary: Add a new Supplier
+      tags:
+      - Supplier
+  /v1/supplier/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a Supplier by id
+      parameters:
+      - description: Supplier ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Supplier delete processed
+          schema:
+            type: string
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "404":
+          description: Supplier not found
+          schema:
+            type: string
+        "500":
+          description: Error
+          schema:
+            type: string
+      summary: Delete a Supplier by id
+      tags:
+      - Supplier
+    get:
+      consumes:
+      - application/json
+      description: Get a Supplier by id
+      parameters:
+      - description: Supplier ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Supplier'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Error
+          schema:
+            type: string
+      summary: Get a Supplier by id
+      tags:
+      - Supplier
+    patch:
+      consumes:
+      - application/json
+      description: Update a Supplier by id
+      parameters:
+      - description: Supplier params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SupplierUpdate'
+      - description: Supplier ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: SupplierDto updated
+          schema:
+            type: string
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Error
+          schema:
+            type: string
+      summary: Update a Supplier by id
+      tags:
+      - Supplier
+  /v1/suppliers:
+    get:
+      consumes:
+      - application/json
+      description: Get Suppliers
+      parameters:
+      - description: limit
+        in: query
+        name: limit
+        type: integer
+      - description: offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.PaginatedSupplierCollection'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "500":
+          description: Error
+          schema:
+            type: string
+      summary: Get Suppliers
+      tags:
+      - Supplier
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+  BasicAuth:
+    type: basic
+swagger: "2.0"
